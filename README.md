@@ -2,7 +2,7 @@
 
 <table>
     <tr>
-        <th>Ambu Bag</th>
+        <th colspan="3">Ambu Bag</th>
     </tr>
     <td>Full Scale Volume</td>  <td>ml</td> <td>800</td>
     </tr>
