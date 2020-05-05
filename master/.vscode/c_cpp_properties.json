@@ -1,0 +1,70 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "c:/Users/dell/Desktop/OpenVentPKDevelopment/PlatformIO/Close Loop and New UI/OpenVentilator_Master_Opti/include",
+                "c:/Users/dell/Desktop/OpenVentPKDevelopment/PlatformIO/Close Loop and New UI/OpenVentilator_Master_Opti/src",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "C:/Users/dell/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/dell/Desktop/OpenVentPKDevelopment/PlatformIO/Close Loop and New UI/OpenVentilator_Master_Opti/include",
+                    "c:/Users/dell/Desktop/OpenVentPKDevelopment/PlatformIO/Close Loop and New UI/OpenVentilator_Master_Opti/src",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/dell/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "C:/Users/dell/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=40303",
+                "ARDUINO_AVR_MEGA2560",
+                "I2C",
+                "MS4525DO",
+                "MS4525_AS_Gauge_Pressure",
+                "FLOW_SENSOR_INSTALLED",
+                "SFM3200AW",
+                "Led",
+                "ActiveBeeper",
+                "stepDirMotor",
+                "StepGen",
+                "CLOSED_LOOP",
+                "TX_SERIAL_TELEMETRY",
+                "TEL_AT_UART0",
+                "AUTO_HOME",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "C:/Users/dell/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
