@@ -1,7 +1,7 @@
 ### PakVentPk - OpenVentilator based on Arduino  
 
 #### Motor speed calculation  
-Motor speed calculation is made using a calculator. (Link will be added here)[#]
+Motor speed calculation is made using a calculator. [Link will be added here](#)
 
 ##### general specifications
 <table>

@@ -5,7 +5,7 @@
 
 #define CODE_VER_MAJOR 2
 #define CODE_VER_MINOR 7 //(Took hold time out of expiration, Homing Done moved to interrupt, Plateau Pressure and PEEP measurements moved to readsensors function)
-
+//#define QT_PLOTTER
 //************************   DEVICE OPERATIONAL PARAMETERS   ************************/
 /*
        WARNING : When changing min and max value, manually change the text in the SerialCommand procedure accordingly
@@ -23,7 +23,7 @@
 #define maxBPM 35.0             // maximum respiratory speed
 #define maxBPMchange 0.2        // maximum respiratory speed change in proportion of final value per beat (1=100%)
 #define minVolume 200.0         // minimum respiratory volume in milliliters
-#define defaultVolume 500.0     // default respiratory volume in milliliters
+#define defaultVolume 600.0     // default respiratory volume in milliliters
 #define stepVolume 100.0        // adjustment step for respiratory volume in milliliters
 #define maxVolume 800.0         // maximum respiratory volume in milliliters
 #define maxVolumeChange 0.25    // maximum respiratory volume change in proportion of final value per beat (1=100%)
@@ -36,7 +36,7 @@
 #define maxWeight 150.00        // minimum compression for the ambu-bag in Pa
 #define minPot 0
 #define maxPot 1023
-#define defaultExpirationRatioIndex 3 //Corresponds to 1:2 see definition: I_E_SampleSet
+#define defaultExpirationRatioIndex 1 //Corresponds to 1:2 see definition: IE_R_Value
 
 #define ADC_TO_VOLTS 0.004887585532746823 //0.004887585532746823 is from 5v/1023
 
@@ -59,11 +59,11 @@
 #define FULL_SCALE_LENGTH             35.0f  //mm
 #define LINEAR_FACTOR_VOLUME          22.86f
 #define LIN_MECH_mm_per_rev           5.0f
-#define STEPPER_MICROSTEP             2.0f
+#define STEPPER_MICROSTEP             4.0f
 #define STEPPER_PULSES_PER_REV        200.0f
 /*******************************   HARDWARE OPTIONS   *******************************
    It's normal for the program to not compile if some of these are undefined as they need an alternative*/
-
+   
 //******************************   IMPIED DEFINITIONS  ********************************
 #ifdef ActiveBeeper
 #define Beeper
@@ -114,6 +114,8 @@
 #define HOMING_NOT_DONE_ERROR 20
 #define OPS_96_HRS 21
 #define FLOW_SENSOR_DISCONNECTED 22
+#define PRESSURE_SENSOR_DISCONNECTED 23
+#define O2_SENSOR_DISCONNECTED 24
 
 //******************************   MACROS  ********************************
 
@@ -127,13 +129,14 @@
 #define ST_COMPLETE 2
 #define ST_FAIL 0
 #define ST_PASS 1
-#define WARM_UP_TIME 10 * 1000
+#define WARM_UP_TIME 2 * 1000
 
 #define DC_MOTOR_IN_USE 1
 #define STEPPER_IN_USE 0
 
 #define VOL_CONT_MODE 0
 #define PRESS_CONT_MODE 1
+#define CALIB_PARAM PRESS_CONT_MODE
 
 /**********Pressure sensors parameters*************/
 #define BMP180_IN_USE 1
@@ -220,14 +223,26 @@
 #define ee_reqBPM eeStart
 #define ee_reqVol ee_reqBPM + (sizeof(float));
 #define ee_reqPres ee_reqVol + (sizeof(float));
-#define ee_MSpdSF ee_reqPres + (sizeof(float));
-#define ee_MVolSF ee_MSpdSF + (sizeof(float));
+#define ee_reqI_E ee_reqPres + (sizeof(float));
+#define ee_reqFiO2 ee_reqI_E + (sizeof(float));
+#define ee_Trigger ee_reqFiO2 + (sizeof(float));
+#define ee_Vol_Coef_a ee_Trigger + (sizeof(float));
+#define ee_Vol_Coef_b ee_MVol_Coef_a + (sizeof(float));
+#define ee_Vol_Coef_c ee_MVol_Coef_b + (sizeof(float));
+#define ee_Vol_Coef_d ee_MVol_Coef_c + (sizeof(float));
 #endif
 
 #define samplePeriod1 10 // 5 ms sampling period
 #define samplePeriod2 10 // 10 ms Control Loop
 
 #define highPressureAlarmDetect 10 // delay before an overpressure alarm is triggered (in samplePeriod increments)
+
+//Calibration Parameters
+#define STEPPERRANGE 40 //mm
+#define stepSize 1 //mm
+#define ORDER 3 //DO not exceed 20.
+#define ORDER_PRESS_EQ 3 //DO not exceed 20.
+
 
 //*******************************   REQUIRED LIBRARIES   *******************************
 #ifdef I2C
@@ -274,6 +289,7 @@ void setMicroSteps(int MicrostepResolution);
 #endif
 
 void selfTest();
+void calibrate(int calibParam);
 void readSensors();
 void Monitoring();
 void alarmControl();
@@ -356,6 +372,7 @@ struct Slave
 #define PRESS_VAR 2
 #define VOL_VAR 3
 
+#define NO_CMD 0
 #define RUN   1
 #define STOP  2
 #define HOME  3

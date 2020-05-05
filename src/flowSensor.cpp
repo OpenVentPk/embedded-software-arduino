@@ -21,10 +21,6 @@ void initFlowSensor()
     FS.scaleFactorTemperature = 100.0; // Scale factor for Temperature
 
     FS.connectionStatus = measflow.init();
-#ifndef TX_SERIAL_TELEMETRY
-//    Serial.print("Flow Sensor Error Code: "); Serial.println(FS.connectionStatus);
-//    delay(20000); //for testing
-    #endif
     #endif
 }
 

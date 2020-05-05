@@ -25,7 +25,7 @@ void Prepare_Tx_Telemetry()
 
     if (TEL.FDCB == 0xCC)
     {
-        TEL.FDCB = 0xFF;
+
         // TEL_BUFF[0] = "$";
         // TEL_BUFF[1] = "O";
         // TEL_BUFF[2] = "V";
@@ -135,9 +135,10 @@ void Prepare_Tx_Telemetry()
         TEL_BUFF[TEL_PACKET_LENGTH-1] = (checksum & 0xFF);
         TEL_BUFF[TEL_PACKET_LENGTH] = 13; //CR
 
-        if (Serial.availableForWrite() >= (TEL_PACKET_LENGTH+1))
+        if (Serial1.availableForWrite() >= (TEL_PACKET_LENGTH+1))
         {
-            Serial.write(TEL_BUFF, TEL_PACKET_LENGTH+1);
+            TEL.FDCB = 0xFF;
+            Serial1.write(TEL_BUFF, TEL_PACKET_LENGTH+1);
             TEL.txPktCtr++;        
         }
     }
@@ -170,7 +171,7 @@ void Prepare_Tx_Telemetry()
     {
         milli_old = millis();
         TEL.txUpdateRate = TEL.txPktCtr;
-    //    Serial.print("Telemetry Update Rate: "); Serial.print(TEL.txUpdateRate); Serial.println(" Hz");
+        Serial.print("Telemetry Tx Rate: "); Serial.print(TEL.txUpdateRate); Serial.println(" Hz");
         TEL.txPktCtr = 0;
     }
 }

@@ -1,0 +1,85 @@
+Initial Homing Routine
+#HOME 2000
+#HOME 1
+#HOME 2
+
+Inside Calibration Routine
+#RUN 800 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 5.00mm
+Volume: 64.19ml
+
+#RUN 1600 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 10.00mm
+Volume: 149.13ml
+
+#RUN 2400 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 15.00mm
+Volume: 250.18ml
+
+#RUN 3200 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 20.00mm
+Volume: 366.88ml
+
+#RUN 4000 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 25.00mm
+Volume: 504.65ml
+
+#RUN 4800 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 30.00mm
+Volume: 658.80ml
+
+#RUN 5600 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 35.00mm
+Volume: 799.61ml
+
+#RUN 6400 2000 1
+#RUN 1
+#RUN 2
+#HOME 2000
+#HOME 1
+#HOME 2
+Distance: 40.00mm
+Volume: 959.62ml
+
+Highest to lowest for 3rd order y=ax^2+bx+c where x is volume and y is step in mm. for 3rd order equation
+-0.01	0.60	8.16	10.37	
+
+#HOME 2000
+#HOME 1
+#HOME 2
+
