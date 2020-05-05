@@ -10,7 +10,7 @@ void Prepare_Tx_Telemetry()
 {
     unsigned char TEL_BUFF[TEL_PACKET_LENGTH+1];
     static unsigned long milli_old = 0;
-    static unsigned int init = 1;
+    static uint8_t init = 1;
     static byte ctr = 0;
 
     if (init == 1)
@@ -134,13 +134,21 @@ void Prepare_Tx_Telemetry()
 
         TEL_BUFF[TEL_PACKET_LENGTH-1] = (checksum & 0xFF);
         TEL_BUFF[TEL_PACKET_LENGTH] = 13; //CR
-
+#ifdef TEL_AT_UART0
+        if (Serial.availableForWrite() >= (TEL_PACKET_LENGTH+1))
+        {
+            TEL.FDCB = 0xFF;
+            Serial.write(TEL_BUFF, TEL_PACKET_LENGTH+1);
+            ctr++;        
+        }
+#else
         if (Serial1.availableForWrite() >= (TEL_PACKET_LENGTH+1))
         {
             TEL.FDCB = 0xFF;
             Serial1.write(TEL_BUFF, TEL_PACKET_LENGTH+1);
-            TEL.txPktCtr++;        
+            ctr++;        
         }
+#endif
     }
 /*  int NData = 12;
   String str_Payload;
@@ -170,9 +178,9 @@ void Prepare_Tx_Telemetry()
     if ((millis() - milli_old) >= 1000)
     {
         milli_old = millis();
-        TEL.txUpdateRate = TEL.txPktCtr;
-        Serial.print("Telemetry Tx Rate: "); Serial.print(TEL.txUpdateRate); Serial.println(" Hz");
-        TEL.txPktCtr = 0;
+        TEL.txUpdateRate = ctr;
+        //Serial.print(F("Tel Tx Rate: ")); Serial.print(TEL.txUpdateRate); Serial.println(F(" Hz"));
+        ctr = 0;
     }
 }
 #endif

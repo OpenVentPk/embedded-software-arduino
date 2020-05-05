@@ -6,8 +6,7 @@ struct TEL_TYPE {
 
 byte FDCB;
 
-unsigned int txPktCtr;
-unsigned int txUpdateRate;
+uint8_t txUpdateRate;
 
 unsigned long Time;
 float mTV;
@@ -23,21 +22,19 @@ float staticCompliance;
 float mRR;
 float mPeakPressure;
 
-
-
-int spTV;
-int spInsPressure;
-int spExpPressure;
-int spFiO2;
-int spBPM;
-int spIE_Inhale;
-int spIE_Exhale;
-int spPEEP;
-int patientWeight;
+uint16_t spTV;
+int16_t spInsPressure;
+int16_t spExpPressure;
+uint8_t spFiO2;
+uint8_t spBPM;
+uint8_t spIE_Inhale;
+uint8_t spIE_Exhale;
+int16_t spPEEP;
+uint8_t patientWeight;
 float spTrigger;
 
-unsigned char statusByteError;
-unsigned char statusByte1;
+uint8_t statusByteError;
+uint8_t statusByte1;
 }; 
 
 void Prepare_Tx_Telemetry();

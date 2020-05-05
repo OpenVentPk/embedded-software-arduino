@@ -17,8 +17,8 @@ void initFlowSensor()
     // “GF_AN_SFM3200_SFM3300_Effects_Humidity_Gas_mixtures”
     // https://www.repcomsrl.com/wp-content/uploads/2016/05/GF_AN_SFM3200_SFM3300_Effects_Humidity_Gas_mixtures_V1_D2.pdf
 
-    FS.offsetTemperature = 20000; // Offset for the sensor
-    FS.scaleFactorTemperature = 100.0; // Scale factor for Temperature
+//    FS.offsetTemperature = 20000; // Offset for the sensor
+//    FS.scaleFactorTemperature = 100.0; // Scale factor for Temperature
 
     FS.connectionStatus = measflow.init();
     #endif
@@ -30,7 +30,7 @@ float getFlowValue()
     unsigned int rawVal = 0.0;
     rawVal = measflow.getvalue();
     volFlowRate = ((float)rawVal - FS.offsetFlow) / (FS.scaleFactorFlow_Air);
-    volFlowRate = (-1.0) * volFlowRate;
+    volFlowRate = volFlowRate;
     return volFlowRate;
 }
 

@@ -40,23 +40,23 @@ lcd.home();
 
 
 // KEY PAD MICROS
-#define KEY_0           7
-#define KEY_1           0
-#define KEY_2           4
-#define KEY_3           8
-#define KEY_4           1
-#define KEY_5           5
+#define KEY_0           2
+#define KEY_1           15
+#define KEY_2           14
+#define KEY_3           13
+#define KEY_4           11
+#define KEY_5           10
 #define KEY_6           9
-#define KEY_7           2
+#define KEY_7           7
 #define KEY_8           6
-#define KEY_9           10
+#define KEY_9           5
 
 #define KEY_A           12    // /
-#define KEY_B           13    // x
-#define KEY_C           14    // -
-#define KEY_D           15    // +
+#define KEY_B           8    // x
+#define KEY_C           4    // -
+#define KEY_D           0    // +
 
-#define KEY_HASH        11    // equ
+#define KEY_HASH        1    // equ
 #define KEY_STAR        3     // on
 
 

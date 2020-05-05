@@ -17,33 +17,25 @@
        some changes have been made to havee a lower default volume in case the machine is used
        with an infant to prevent damaging their lungs with an adult setting.*/
 
-#define minBPM 8.0             // minimum respiratory speed
-#define defaultBPM 12.0         // default respiratory speed
-#define stepBPM 1.0             // adjustment step for respiratory speed
-#define maxBPM 35.0             // maximum respiratory speed
-#define maxBPMchange 0.2        // maximum respiratory speed change in proportion of final value per beat (1=100%)
-#define minVolume 200.0         // minimum respiratory volume in milliliters
-#define defaultVolume 600.0     // default respiratory volume in milliliters
-#define stepVolume 100.0        // adjustment step for respiratory volume in milliliters
-#define maxVolume 800.0         // maximum respiratory volume in milliliters
-#define maxVolumeChange 0.25    // maximum respiratory volume change in proportion of final value per beat (1=100%)
-#define minPressure 0.00        // minimum compression for the ambu-bag in Pa
-#define stepPressure 500.00     // adjustment step for compression for the ambu-bag in Pa
-#define defaultPressure 2942.00 // default compression for the ambu-bag in Pa
-#define maxPressure 3922.66     // maximum compression for the ambu-bag in Pa //approx 40cH20
-#define maxPressureChange 0.5   // maximum compression for the ambu-bag change in proportion of final value per beat (1=100%)
-#define minWeight 2.00          // minimum compression for the ambu-bag in Pa
-#define maxWeight 150.00        // minimum compression for the ambu-bag in Pa
-#define minPot 0
-#define maxPot 1023
+#define Pa2cmH2O 0.0101972
+#define cmH2O_to_Pa 98.0665
+
+
+#define minBPM 8             // minimum respiratory speed
+#define defaultBPM 12        // default respiratory speed
+#define maxBPM 35             // maximum respiratory speed
+#define minVolume 200         // minimum respiratory volume in milliliters
+#define defaultVolume 600     // default respiratory volume in milliliters
+#define maxVolume 800         // maximum respiratory volume in milliliters
+#define minPressure 0        // minimum compression for the ambu-bag in cmH2O
+#define defaultPressure 15 // default compression for the ambu-bag in cmH2O
+#define maxPressure 40     // maximum compression for the ambu-bag in cmH2O //approx 40cH20
+#define minWeight 2          // minimum compression for the ambu-bag in Pa
+#define maxWeight 150        // minimum compression for the ambu-bag in Pa
 #define defaultExpirationRatioIndex 1 //Corresponds to 1:2 see definition: IE_R_Value
 
 #define ADC_TO_VOLTS 0.004887585532746823 //0.004887585532746823 is from 5v/1023
 
-#define ambientPressureFilter 0.002       // IIR filtering ratio (lower value produce longer time constant)
-#define avgPressureFilter 0.1             // IIR filtering ratio (lower value produce longer time constant)
-#define defaultMeasuredPressure 105000.00 // Pressure in Pa returned when no sensor is found
-#define defaultAmbientPressure 105000.00  // assumed ambiant pressure in Pa returned when no sensor is found
 /*******************************   MOTOR PARAMETERS FOR STEPPER MOTOR   *******************************
 
        These values will be highly dependant on mechanical design.
@@ -136,7 +128,6 @@
 
 #define VOL_CONT_MODE 0
 #define PRESS_CONT_MODE 1
-#define CALIB_PARAM PRESS_CONT_MODE
 
 /**********Pressure sensors parameters*************/
 #define BMP180_IN_USE 1
@@ -153,8 +144,6 @@
 #define PSI_to_Pa 6894.757f
 /***************end***********************/
 
-#define Pa2cmH2O 0.0101972
-#define cmH2O_to_Pa 98.0665
 
 //********************************   CONNECTION PINS   ********************************
 // ATmega2560-Arduino Pin Mapping: https://www.arduino.cc/en/Hacking/PinMapping2560
@@ -163,7 +152,7 @@
 #define pin_SCL 21
 #endif
 
-#define MPX_IN A4
+//#define MPX_IN A4
 
 #ifdef ActiveBeeper
 #define pin_Beep 37 //Any Pin
@@ -192,15 +181,6 @@
 #define pin_LmtSWT_CL2 49
 
 #ifdef stepDirMotor
-//#define pin_Stepper_DIR 4
-//#define pin_Stepper_STEP 3
-//#define pin_Stepper_SLP 2 //Active Low
-//#define pin_Stepper_RST      15 //Active Low
-//#define pin_Stepper_MS3 25
-//#define pin_Stepper_MS2 24
-//#define pin_Stepper_MS1 23
-//#define pin_Stepper_EN1     23 //Active Low
-//#define pin_Stepper_EN2     24 //Active Low
 
 //Instructions for using moveTo function of Accel Stepper Class
 // moveTo() also recalculates the speed for the next step.
@@ -248,12 +228,6 @@
 #ifdef I2C
 #include <Wire.h>              // I2C Library 2 wire Protocol
 #include <LiquidCrystal_I2C.h> // Library for LCD //Liquid Crystal I2C by Frank de Brabander
-
-#ifdef BMP_180
-#include <SFE_BMP180.h> // BMP180 library to read bmp180
-#define ALTITUDE 1655.0 //this should be according to the altitude of the user
-SFE_BMP180 bmp180;
-#endif
 #endif
 
 #ifdef E2PROM
@@ -269,24 +243,8 @@ SFE_BMP180 bmp180;
 
 #include "TimerThree.h" // Timer3 component
 
-#ifdef PID_CONTROL
-
-//----------------------------------------------------------------------
-//PID stuff for stepper motors
-//----------------------------------------------------------------------
-#include <PID_v1.h>
-
-#define max_stepCmd 20000.0  //max output value from PID
-#define min_stepCmd -20000.0  //min output value from PID
-#define PID_sample_time 10  //how often the PID algorithm evaluates in ms
-#define deadband 3        // +/- number of counts to not respond 6
-
-#endif
 //***************************************   FUNCTION PROTOTYPES   ***************************************
-#ifdef StepGen
-void Timer();
-void setMicroSteps(int MicrostepResolution);
-#endif
+void Timer1ISR();
 
 void selfTest();
 void calibrate(int calibParam);
@@ -308,11 +266,6 @@ void GetTelData();
 void eeput(int n); // records to EEPROM (only if values are validated)
 void eeget();
 
-#ifdef PID_CONTROL
-void PID_setup();
-void calc_PID();
-#endif
-
 void txSlaveCMD(int CMD_ID, unsigned int period=0, unsigned int pulses=0, String dir="0");
 void decodeSlaveTel();
 //***************************************   END   ***************************************
@@ -330,14 +283,18 @@ struct P_Sensor
 
 struct setpointStatus
 {
-  int curI_E_Section; //Patient Weight
-  int curBPM;         // BPM
-  int curTV;          //Tidal Volume Setpoint
-  int curOP;          //Overpressure limit
-  int newI_E_Section; //Patient Weight
-  int newBPM;         // BPM
-  int newTV;          //Tidal Volume Setpoint
-  int newOP;          //Overpressure limit
+  uint8_t curI_E; //I/E Ratio
+  uint8_t curBPM;         // BPM
+  uint16_t curVolume;          //Tidal Volume Setpoint
+  uint8_t curPressure;          //Insp pressure limit
+  uint8_t curFiO2;          //Oxygen Concentration
+  
+  uint8_t reqI_E_Section; //I/E Ratio
+  uint8_t reqBPM;         // BPM
+  uint16_t reqVolume;          //Tidal Volume Setpoint
+  uint8_t reqPressure;          //Insp pressure limit
+  uint8_t reqFiO2;          //Oxygen Concentration
+  float flowTriggerSenstivity; //Lpm trigger for Assist mode
 };
 
 struct Alarm
@@ -382,18 +339,6 @@ struct Slave
 #define CMD_COMPLETE 2
 #define CMD_ERROR    3
 
-#ifdef PID_CONTROL
-
-struct PID_TYPE
-{
-  double setpoint = 500.0;
-  double output = 0.0;
-  double input = 0.0;
-  double Kp = 0.03;  //proportional gain
-  double Ki = 0.0;
-  double Kd = 0.0;
-};
-#endif
 //***************************************   END   ***************************************
 #endif
 /* NOTE*****************************************************************************************************************8
